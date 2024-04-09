@@ -1,50 +1,57 @@
-const { signUp, basicAuth } = require("./basic");
-const base64 = require("base-64");
-const { sequelize } = require("../models");
+const { signUp, basicAuth } = require("./basic"); // Importing signUp and basicAuth middleware functions
+const base64 = require("base-64"); // Importing base64 library for encoding/decoding
+const { sequelize } = require("../models"); // Importing sequelize instance
 
 beforeAll(async () => {
-  sequelize.sync();
+  // Before all tests, sync sequelize models with the database
+  sequelize.sync(); // Syncing sequelize models with the database
 });
 
 describe("validate signUp", () => {
+  // Test suite for signUp middleware function
+
   it("should take in json user/pass, create new User, next properly called", async () => {
+    // Testing signUp middleware function
     const req = {
       body: {
-        username: "test1",
-        passwordHash: "777",
+        username: "test1", // Test username
+        passwordHash: "777", // Test password hash
       },
     };
     const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-      send: jest.fn(),
+      status: jest.fn().mockReturnThis(), // Mocking status function
+      json: jest.fn(), // Mocking json function
+      send: jest.fn(), // Mocking send function
     };
 
-    const next = jest.fn();
+    const next = jest.fn(); // Mocking next function
 
-    await signUp(req, res, next);
+    await signUp(req, res, next); // Calling signUp middleware function
 
-    expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalled(); // (Important) Expecting next function to be called
   });
 });
 
 describe("validate basicAuth", () => {
+  // Test suite for basicAuth middleware function
+
   it("should take in a header with user/pass, User finds one, next properly called", async () => {
+    // Testing basicAuth middleware function
     const req = {
       headers: {
-        authorization: `basic ${base64.encode("test1:777")}`,
+        authorization: `basic ${base64.encode("test1:777")}`, // Creating basic authorization header
       },
     };
     const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-      send: jest.fn(),
+      status: jest.fn().mockReturnThis(), // Mocking status function
+      json: jest.fn(), // Mocking json function
+      send: jest.fn(), // Mocking send function
     };
 
-    const next = jest.fn();
+    const next = jest.fn(); // Mocking next function
 
-    await basicAuth(req, res, next);
+    await basicAuth(req, res, next); // Calling basicAuth middleware function
 
-    expect(next).toHaveBeenCalled();
+    expect(next).toHaveBeenCalled(); // (Important) Expecting next function to be called
   });
 });
