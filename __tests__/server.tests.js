@@ -1,7 +1,6 @@
 'use strict';
 
 
-const supertest = require('supertest');
 const { sequelize, User } = require('../src/auth/models');
 const { app } = require('../src/server.js');
 
