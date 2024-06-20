@@ -1,43 +1,36 @@
-// This file contains tests for server endpoints using Supertest library
-// Supertest allows making HTTP requests to test endpoints
+'use strict';
 
-const supertest = require("supertest"); // Importing supertest library for making HTTP requests
-const { sequelize, User } = require("../src/auth/models/index.js"); // Importing sequelize and User model from the auth module
-const { app } = require("../src/server.js"); // Importing the main express app
 
-const request = supertest(app); // Creating a supertest agent to make requests to the express app
+const supertest = require('supertest');
+const { sequelize, User } = require('../src/auth/models');
+const { app } = require('../src/server.js');
+
+const request = supertest(app);
 
 beforeAll(async () => {
-  // Before all tests, sync the sequelize models with the database and create a test user
-  await sequelize.sync(); // Syncing sequelize models with the database
+  await sequelize.sync();
   User.create({
-    username: "test", // Test username
-    passwordHash: "925", // Test password hash
+    username: 'test',
+    password: '456',
   });
 });
 
 afterAll(async () => {
-  // After all tests, drop the sequelize models to clean up the test environment
-  await sequelize.drop(); // Dropping sequelize models from the database
+  await sequelize.drop();
 });
 
-describe("Server Tests", () => {
-  // Test suite for server endpoints
-
-  it("should give a status 200 and return 'Welcome to Heaven!'", async () => {
-    // Testing the signup endpoint
-    let response = await request.post("/auth/signup").send({
-      username: "MT_B0sniak", // Test username
-      passwordHash: "241", // Test password hash
+describe('Server Tests', () => {
+  it('should give a status 200 and return"Youve signed up!!!"', async () => {
+    let response = await request.post('/api/signup').send({
+      username: 'Kawika',
+      password: 'oompahloompah',
     });
-    expect(response.status).toEqual(200); // Asserting that the response status is 200
-    expect(response.text).toEqual("You shall Pass!"); // (Important) Asserting that the response text is 'You shall Pass!'
+    expect(response.status).toEqual(200);
+    expect(response.text).toEqual('Youve signed up');
   });
-
-  it("should give status 200 and return 'Welcome to the app!!!'", async () => {
-    // Testing the signin endpoint
-    let response = await request.post("/auth/signin").auth("MT_B0sniak", "241"); // Authenticating with test credentials
-    expect(response.status).toEqual(200); // Asserting that the response status is 200
-    expect(response.text).toEqual("Welcome to Heaven!"); // (Important) Asserting that the response text is 'Welcome to Heaven!'
+  it('should give status 200 and return \'Youve signed in\'', async () => {
+    let response = await request.post('/api/signin').auth('Kawika', 'oompahloompah');
+    expect(response.status).toEqual(200);
+    expect(response.text).toEqual('Youve signed in');
   });
 });
