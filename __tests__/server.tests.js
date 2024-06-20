@@ -22,7 +22,7 @@ afterAll(async () => {
 describe('Server Tests', () => {
   it('should give a status 200 and return"Youve signed up!!!"', async () => {
     let response = await request.post('/api/signup').send({
-      username: 'Kawika',
+      username: 'Mak',
       password: 'oompahloompah',
     });
     expect(response.status).toEqual(200);
