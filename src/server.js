@@ -1,27 +1,36 @@
+// This file sets up an Express application with essential middleware and routing for authentication, error handling, and server startup, making it ready for use in a Node.js server application.
+
 'use strict';
 
+// Required libraries and modules
 const express = require("express"); // Importing express framework
 const authRouter = require("./auth/router.js"); // Importing authentication router
 const invalidRouter = require("./middleware/404.js"); // Importing middleware for handling invalid routes
 const serverError = require("./middleware/500.js"); // Importing middleware for handling server errors
 
-const app = express(); // Creating an express application instance
+// Creating an express application instance
+const app = express();
 
-app.use(express.json()); // Adding middleware to parse JSON requests
+// Adding middleware to parse JSON requests
+app.use(express.json());
 
-app.use(express.urlencoded({ extended: true })); // Adding middleware to parse URL-encoded requests
+// Adding middleware to parse URL-encoded requests
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", authRouter); // Mounting the authentication router at /auth endpoint
+// Mounting the authentication router at /auth endpoint
+app.use("/auth", authRouter);
 
-app.use(invalidRouter); // Adding middleware to handle invalid routes
+// Adding middleware to handle invalid routes
+app.use(invalidRouter);
 
-app.use(serverError); // Adding middleware to handle server errors
+// Adding middleware to handle server errors
+app.use(serverError);
 
+// Exporting start function to start the server
 module.exports = {
-  // Exporting start function to start the server
   start: (port) =>
     app.listen(port, () => {
       console.log("Running on PORT", port); // Logging that the server is running on the specified port
     }),
-  app, // Exporting the express application instance
+  app // Exporting the express application instance
 };

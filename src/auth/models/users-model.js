@@ -1,3 +1,6 @@
+// This file sets up a User model with two attributes (username and passwordHash) using Sequelize and exports it for use in other parts of the application.
+
+
 const User = (sequelize, DataTypes) => {
     // Function to define the User model
     return sequelize.define("User", {
